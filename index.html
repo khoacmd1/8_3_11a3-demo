@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi 11A3 Rực Rỡ nhất!</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --pink-light: #fff0f3;
+            --pink-main: #ff85a1;
+            --pink-dark: #ff4d6d;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: radial-gradient(circle, #ffeef2 0%, #fbc2eb 100%);
+            font-family: 'Quicksand', Arial, sans-serif; /* Thêm Arial dự phòng */
+            overflow: hidden;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .star-seal {
+            width: 140px;
+            height: 140px;
+            background: #fff;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(255, 133, 161, 0.8);
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .star-seal span {
+            color: var(--pink-dark);
+            font-family: 'Pacifico', cursive;
+            font-size: 24px;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0px rgba(255, 133, 161, 0.7); }
+            100% { box-shadow: 0 0 0 25px rgba(255, 133, 161, 0); }
+        }
+
+        #class-photo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 20px;
+            border: 8px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 100;
+            transition: all 1s cubic-bezier(0.175, 0.885,
