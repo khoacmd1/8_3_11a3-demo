@@ -70,4 +70,78 @@
             border: 8px solid white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             z-index: 100;
-            transition: all 1s cubic-bezier(0.175, 0.885,
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .letter-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            width: 85%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 2px solid var(--pink-main);
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--pink-dark);
+            font-size: 2rem;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #444;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="envelope-wrapper" id="envelope" onclick="openMagic()">
+        <p style="color: var(--pink-dark); font-weight: bold;">Chạm vào ngôi sao tặng 11A3 nè!</p>
+        <div class="star-seal">
+            <span>11A3</span>
+        </div>
+    </div>
+
+    <img src="lop11a3.jpg" id="class-photo">
+
+    <div id="main-letter" class="letter-content">
+        <h1>Gửi những "đóa hoa" rực rỡ nhất của 11A3!</h1>
+        <p>
+            Các bạn nữ 11A3 thân mến,<br><br>
+            Thay mặt cho cánh mày râu trong lớp, tớ viết những dòng này để gửi lời cảm ơn chân thành nhất đến các bạn. 11A3 của chúng mình chắc chắn sẽ rất nhàm chán nếu thiếu đi tiếng cười, sự dịu dàng và cả những lần "nhắc bài" cứu nguy từ các bạn.<br><br>
+            Chúc các cô gái của lớp mình luôn tự tin là chính mình, xinh đẹp theo cách riêng và sớm đạt được những mục tiêu học tập sắp tới.<br><br>
+            Mãi rạng rỡ như thế này nhé! ✨
+        </p>
+    </div>
+
+    <script>
+        function openMagic() {
+            const envelope = document.getElementById('envelope');
+            const photo = document.getElementById('class-photo');
+            const letter = document.getElementById('main-letter');
+
+            envelope.style.display = 'none';
+
+            // Pháo hoa
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
+
+            // Hiện ảnh
+            photo.style.transform = 'translate(-50%, -50%) scale(1)';
+            
+            setTimeout(() => {
+                photo.style.transform = 'translate(-50%, -130%) scale(0.3)';
+                setTimeout(() => {
+                    letter.style.display = 'block';
+                }, 500);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
