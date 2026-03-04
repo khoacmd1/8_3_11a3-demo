@@ -131,11 +131,12 @@
     transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1);
   }
   #photo-burst img, #photo-burst .photo-placeholder {
-    max-width: min(85vw, 520px);
-    max-height: 70vh;
+    width: min(90vw, 90vh, 520px);
+    max-width: 90vw;
+    max-height: 75vh;
     border-radius: 20px;
     box-shadow: 0 32px 80px rgba(0,0,0,0.5);
-    object-fit: cover;
+    object-fit: contain;
     transform: scale(0.88);
     opacity: 0;
     transition: transform 0.9s cubic-bezier(0.34,1.56,0.64,1), opacity 0.7s ease;
@@ -222,7 +223,7 @@
 
   /* Date line */
   .letter-date {
-    text-align: right;
+    text-align: center;
     font-family: 'Lato', sans-serif;
     font-size: 0.78rem;
     font-weight: 300;
@@ -230,6 +231,7 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-bottom: 28px;
+    line-height: 1.7;
   }
 
   /* Divider */
@@ -416,6 +418,47 @@
     50% { box-shadow: 0 4px 28px rgba(180,0,80,0.55), 0 0 0 6px rgba(232,120,154,0.2); }
   }
 
+  
+  /* Landscape prompt */
+  #landscape-prompt {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: rgba(180,0,60,0.88);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .landscape-inner {
+    text-align: center;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    padding: 32px;
+  }
+  .landscape-inner p {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .landscape-inner button {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.5);
+    color: white;
+    padding: 10px 28px;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .landscape-inner button:hover { background: rgba(255,255,255,0.35); }
+
+  /* Only show on portrait mobile when photo is showing */
+  @media (max-width: 600px) and (orientation: portrait) {
+    #landscape-prompt.active { display: flex; }
+  }
+
   </style>
 </head>
 <body>
@@ -503,6 +546,16 @@
 <!-- Music control button -->
 <button id="music-btn" onclick="toggleMusic()" title="Bật/tắt nhạc">🎵</button>
 
+
+<!-- Landscape prompt for mobile -->
+<div id="landscape-prompt">
+  <div class="landscape-inner">
+    <div style="font-size:3rem;margin-bottom:12px;">📱➡️</div>
+    <p>Xoay ngang màn hình<br>để xem ảnh lớp đẹp hơn nhé!</p>
+    <button onclick="document.getElementById('landscape-prompt').style.display='none'">Bỏ qua</button>
+  </div>
+</div>
+
 <!-- Backdrop -->
 <div id="backdrop"></div>
 
@@ -522,8 +575,8 @@
       <div class="corner-decor bl">❀</div>
       <div class="corner-decor br">❀</div>
 
-      <div class="letter-date">Ngày 8 tháng 3 năm 2026 &nbsp;·&nbsp;</div> 
-      <div class="letter-date">Nhân ngày Quốc tế Phụ nữ</div>
+      <div class="letter-date">Ngày 8 tháng 3 năm 2026<br>Nhân ngày Quốc tế Phụ nữ</div>
+
       <div class="divider"><span class="divider-icon">❀</span></div>
 
       <h1 class="letter-title">
@@ -747,6 +800,17 @@ document.getElementById('backdrop').addEventListener('click', closeLetter);
     }
     document.removeEventListener('click', startMusic);
   }, { once: true });
+
+
+  // Show landscape prompt on mobile portrait when photo burst shows
+  function checkLandscape() {
+    const isMobile = window.innerWidth <= 600;
+    const isPortrait = window.innerHeight > window.innerWidth;
+    const prompt = document.getElementById('landscape-prompt');
+    if (isMobile && isPortrait) {
+      prompt.classList.add('active');
+    }
+  }
 
 </script>
 </body>
