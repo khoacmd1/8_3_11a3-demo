@@ -2,9 +2,9 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gửi 11A3 Rực Rỡ nhất!</title>
+    <title>11A3 - Đóa Hoa Rực Rỡ Nhất!</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&family=Pacifico&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
@@ -13,6 +13,8 @@
             --pink-light: #fff0f3;
             --pink-main: #ff85a1;
             --pink-dark: #ff4d6d;
+            --disney-gold: #f9d423;
+            --ivory: #fffff0;
         }
 
         body {
@@ -22,126 +24,384 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: radial-gradient(circle, #ffeef2 0%, #fbc2eb 100%);
-            font-family: 'Quicksand', Arial, sans-serif; /* Thêm Arial dự phòng */
-            overflow: hidden;
+            background: radial-gradient(circle at center, #ffeef2 0%, #fbc2eb 100%);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden; /* Không hiện thanh cuộn */
+            perspective: 1000px; /* Tạo chiều sâu 3D */
         }
 
-        .envelope-wrapper {
+        /* ----- HIỆU ỨNG BỤI TIÊN DISNEY LẤP LÁNH ----- */
+        #sparkle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ----- CONTAINER BAN ĐẦU: SỬA LỖI LỆCH NGÔI SAO ----- */
+        .magic-envelope-container {
             position: relative;
-            z-index: 2;
-            text-align: center;
+            width: 300px;
+            height: 220px;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 1s ease;
+            cursor: pointer;
         }
 
+        /* Văn bản hướng dẫn trên ngôi sao */
+        .instruction-text {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--pink-dark);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            width: 250px;
+            animation: bounceText 2s infinite;
+        }
+
+        @keyframes bounceText {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* Hình dạng phong bì 3D */
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--pink-main);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 1s ease;
+        }
+
+        /* Nắp phong bì (phần tam giác trên) */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ff6b8e;
+            clip-path: polygon(0 0, 100% 0, 50% 50%);
+            border-radius: 10px 10px 0 0;
+            transition: all 1s ease;
+            z-index: 3;
+            transform-origin: top;
+        }
+
+        /* Thân phong bì (phần tam giác dưới) */
+        .envelope-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--pink-main);
+            clip-path: polygon(0 50%, 50% 100%, 100% 50%, 100% 100%, 0 100%);
+            border-radius: 0 0 10px 10px;
+            z-index: 2;
+        }
+
+        /* NGÔI SAO PHONG ẤN (SỬA LỖI ĐỊNH VỊ) */
         .star-seal {
-            width: 140px;
-            height: 140px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Luôn ở giữa phong bì */
+            width: 120px;
+            height: 120px;
             background: #fff;
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 20px rgba(255, 133, 161, 0.8);
-            cursor: pointer;
-            animation: pulse 2s infinite;
-            border: none;
-            transition: 0.3s;
+            box-shadow: 0 0 25px rgba(255, 133, 161, 0.9);
+            z-index: 4; /* Nằm trên nắp phong bì */
+            transition: all 0.5s ease;
+            animation: starPulse 2s infinite;
+        }
+
+        .star-seal:hover {
+            transform: translate(-50%, -50%) scale(1.15) rotate(10deg);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 1);
         }
 
         .star-seal span {
             color: var(--pink-dark);
             font-family: 'Pacifico', cursive;
             font-size: 24px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0px rgba(255, 133, 161, 0.7); }
-            100% { box-shadow: 0 0 0 25px rgba(255, 133, 161, 0); }
+        @keyframes starPulse {
+            0% { box-shadow: 0 0 0 0px rgba(255, 133, 161, 0.8); }
+            70% { box-shadow: 0 0 0 25px rgba(255, 133, 161, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(255, 133, 161, 0); }
         }
 
+        /* ----- HIỆU ỨNG MỞ PHONG BÌ (ANIMATION) ----- */
+        .magic-envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1; /* Nằm dưới thân phong bì sau khi mở */
+        }
+
+        .magic-envelope-container.open .star-seal {
+            transform: translate(-50%, -50%) scale(0) rotate(360deg);
+            opacity: 0;
+        }
+
+        .magic-envelope-container.open {
+            transform: translateY(150px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ----- ẢNH LỚP 11A3 (ANIMATION XUẤT HIỆN) ----- */
         #class-photo {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0);
+            transform: translate(-50%, -50%) scale(0); /* Ban đầu ẩn */
             width: 90%;
-            max-width: 600px;
+            max-width: 650px;
             border-radius: 20px;
-            border: 8px solid white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            z-index: 100;
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 10px solid white;
+            box-shadow: 0 20px 50px rgba(255, 77, 109, 0.5);
+            z-index: 100; /* Nằm trên cùng */
+            transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            object-fit: cover;
+            opacity: 0;
         }
 
+        /* Trạng thái ảnh hiện ra to */
+        #class-photo.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        /* Trạng thái ảnh thu nhỏ về góc thiệp */
+        #class-photo.minimize {
+            transform: translate(-50%, -140%) scale(0.35);
+            top: 25%;
+            opacity: 1;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* ----- BỨC THƯ CÔNG CHÚA DISNEY (VIỀN VÀNG LẤP LÁNH) ----- */
         .letter-content {
             display: none;
-            background: white;
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 50px;
             width: 85%;
-            max-width: 500px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            max-width: 550px;
+            border-radius: 30px;
+            box-shadow: 0 20px 70px rgba(0,0,0,0.2);
             text-align: center;
-            border: 2px solid var(--pink-main);
+            position: relative;
+            border: 6px double var(--pink-main); /* Viền kép sang trọng */
+            animation: slideInLetter 1.5s forwards;
             z-index: 10;
         }
 
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            color: var(--pink-dark);
-            font-size: 2rem;
+        /* Viền vàng lấp lánh phụ */
+        .letter-content::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border: 3px solid var(--disney-gold);
+            border-radius: 35px;
+            opacity: 0.6;
+            pointer-events: none;
         }
 
+        @keyframes slideInLetter {
+            from { transform: translateY(100px) scale(0.8); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        /* Tiêu đề thư (Gradient và Font Dancing Script) */
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(45deg, var(--pink-dark), var(--pink-main), var(--disney-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: none;
+        }
+
+        /* Nội dung thư (Căn đều và thoáng) */
         p {
-            line-height: 1.6;
+            line-height: 1.9;
             color: #444;
-            font-size: 1.1rem;
-            text-align: center;
+            font-size: 1.15rem;
+            text-align: justify;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* Chữ ký cuối thư */
+        .letter-footer {
+            margin-top: 30px;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.6rem;
+            color: var(--pink-main);
+            text-align: right;
+            padding-right: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div class="envelope-wrapper" id="envelope" onclick="openMagic()">
-        <p style="color: var(--pink-dark); font-weight: bold;">Chạm vào ngôi sao tặng 11A3 nè!</p>
+    <canvas id="sparkle-canvas"></canvas>
+
+    <div class="magic-envelope-container" id="envelope" onclick="openMagic()">
+        <div class="instruction-text">Tap nhẹ vào Ngôi sao Phép thuật để nhận Bất ngờ! ✨</div>
+        <div class="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-body"></div>
+        </div>
         <div class="star-seal">
             <span>11A3</span>
         </div>
     </div>
 
-    <img src="lop11a3.jpg" id="class-photo">
+    <img src="lop11a3.jpg" id="class-photo" alt="Lớp 11A3">
 
     <div id="main-letter" class="letter-content">
         <h1>Gửi những "đóa hoa" rực rỡ nhất của 11A3!</h1>
         <p>
             Các bạn nữ 11A3 thân mến,<br><br>
             Thay mặt cho cánh mày râu trong lớp, tớ viết những dòng này để gửi lời cảm ơn chân thành nhất đến các bạn. 11A3 của chúng mình chắc chắn sẽ rất nhàm chán nếu thiếu đi tiếng cười, sự dịu dàng và cả những lần "nhắc bài" cứu nguy từ các bạn.<br><br>
-            Chúc các cô gái của lớp mình luôn tự tin là chính mình, xinh đẹp theo cách riêng và sớm đạt được những mục tiêu học tập sắp tới.<br><br>
-            Mãi rạng rỡ như thế này nhé! ✨
+            Chúc các cô gái của lớp mình luôn tự tin là chính mình, xinh đẹp theo cách riêng và sớm đạt được những mục tiêu học tập sắp tới. Mong rằng 11A3 sẽ luôn là một gia đình đoàn kết, nơi mà mỗi bạn nữ đều cảm thấy được trân trọng và yêu thương.<br><br>
         </p>
+        <div class="letter-footer">Mãi rạng rỡ như thế này nhé! ✨💙</div>
     </div>
 
     <script>
+        // ----- KỊCH BẢN BẤT NGỜ (JAVASCRIPT) -----
         function openMagic() {
             const envelope = document.getElementById('envelope');
             const photo = document.getElementById('class-photo');
             const letter = document.getElementById('main-letter');
 
-            envelope.style.display = 'none';
+            // 1. Chạy animation mở phong bì
+            envelope.classList.add('open');
 
-            // Pháo hoa
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
+            // 2. PHÁO HOA 3 CHẾ ĐỘ
 
-            // Hiện ảnh
-            photo.style.transform = 'translate(-50%, -50%) scale(1)';
-            
+            // Chế độ 1: Bắn từ 2 cạnh cực mạnh
+            const end = Date.now() + 2500;
+            (function frame() {
+                confetti({
+                    particleCount: 10,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff4d6d', '#ffffff', '#ffd700', '#00f'] // Pink, White, Gold, Disney Blue
+                });
+                confetti({
+                    particleCount: 10,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff4d6d', '#ffffff', '#ffd700', '#00f']
+                });
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Chế độ 2: Bắn từ giữa khi nắp mở (sau 0.5s)
             setTimeout(() => {
-                photo.style.transform = 'translate(-50%, -130%) scale(0.3)';
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.5 },
+                    colors: ['#ff85a1', '#ffd700', '#ffffff']
+                });
+            }, 500);
+
+            // 3. HIỆN ẢNH LỚP (ANIMATION XUẤT HIỆN)
+            setTimeout(() => {
+                photo.classList.add('show');
+                
+                // 4. THU NHỎ ẢNH VÀ HIỆN THƯ
                 setTimeout(() => {
-                    letter.style.display = 'block';
-                }, 500);
-            }, 3000);
+                    photo.classList.remove('show');
+                    photo.classList.add('minimize');
+                    
+                    // Chế độ 3: Mưa pháo hoa nhẹ rơi khi hiện thư
+                    confetti({
+                        particleCount: 200,
+                        spread: 160,
+                        origin: { y: -0.1 }, // Rơi từ đỉnh màn hình
+                        colors: ['#ff85a1', '#ffffff']
+                    });
+
+                    setTimeout(() => {
+                        letter.style.display = 'block';
+                    }, 800);
+                }, 3500); // Thời gian ảnh hiện to (3.5 giây)
+            }, 1000); // Thời gian phong bì mở (1 giây)
         }
+
+        // ----- HIỆU ỨNG BỤI TIÊN DISNEY LẤP LÁNH (CANVAS) -----
+        const canvas = document.getElementById('sparkle-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, sparkles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function createSparkle() {
+            return {
+                x: Math.random() * width,
+                y: Math.random() * height,
+                size: Math.random() * 3 + 1,
+                velocity: Math.random() * 0.5 + 0.1,
+                opacity: Math.random() * 0.5 + 0.1,
+                color: Math.random() > 0.3 ? '#ffd700' : '#ffffff' // 70% Gold, 30% White
+            };
+        }
+
+        for (let i = 0; i < 70; i++) {
+            sparkles.push(createSparkle());
+        }
+
+        function animateSparkles() {
+            ctx.clearRect(0, 0, width, height);
+            sparkles.forEach(sparkle => {
+                ctx.globalAlpha = sparkle.opacity;
+                ctx.fillStyle = sparkle.color;
+                ctx.beginPath();
+                ctx.arc(sparkle.x, sparkle.y, sparkle.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                sparkle.y -= sparkle.velocity;
+                sparkle.opacity -= 0.003;
+
+                if (sparkle.y < 0 || sparkle.opacity <= 0) {
+                    Object.assign(sparkle, createSparkle(), { y: height }); // Tạo mới ở đáy
+                }
+            });
+            requestAnimationFrame(animateSparkles);
+        }
+        animateSparkles();
     </script>
 </body>
 </html>
