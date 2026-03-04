@@ -352,7 +352,40 @@
     #star { width: 120px; height: 120px; }
     .star-label { font-size: 1.2rem; }
   }
-</style>
+
+  /* === Floating background decorations (show when letter opens) === */
+  #bg-decorations {
+    position: fixed;
+    inset: 0;
+    z-index: 51;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  #bg-decorations.visible { opacity: 1; }
+
+  .bg-deco {
+    position: absolute;
+    animation: bgFloat linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes bgFloat {
+    0%   { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+    25%  { transform: translateY(-18px) rotate(8deg); opacity: 1; }
+    50%  { transform: translateY(-8px) rotate(-4deg); opacity: 0.8; }
+    75%  { transform: translateY(-22px) rotate(6deg); opacity: 1; }
+    100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+  }
+
+  @keyframes bgDrift {
+    0%   { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+    33%  { transform: translateX(12px) translateY(-15px) rotate(15deg) scale(1.05); }
+    66%  { transform: translateX(-8px) translateY(-25px) rotate(-10deg) scale(0.95); }
+    100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+  }
+
+  </style>
 </head>
 <body>
 
@@ -385,6 +418,49 @@
     <div class="star-label">✦ 11A3 ✦</div>
   </div>
   <div class="tap-hint">✨ Nhấn vào để mở thư ✨</div>
+</div>
+
+
+<!-- Background floating decorations -->
+<div id="bg-decorations">
+  <!-- Tulips SVG inline -->
+  <div class="bg-deco" style="left:4%;top:12%;font-size:3.2rem;animation:bgFloat 5.1s ease-in-out infinite;animation-delay:0s;">🌷</div>
+  <div class="bg-deco" style="right:6%;top:18%;font-size:2.6rem;animation:bgFloat 6.3s ease-in-out infinite;animation-delay:-1.5s;">🌸</div>
+  <div class="bg-deco" style="left:8%;bottom:20%;font-size:2.8rem;animation:bgDrift 7.2s ease-in-out infinite;animation-delay:-2s;">🌺</div>
+  <div class="bg-deco" style="right:4%;bottom:25%;font-size:3rem;animation:bgFloat 5.8s ease-in-out infinite;animation-delay:-3s;">🌷</div>
+  <div class="bg-deco" style="left:2%;top:45%;font-size:2rem;animation:bgDrift 8s ease-in-out infinite;animation-delay:-0.8s;">✿</div>
+  <div class="bg-deco" style="right:2%;top:50%;font-size:2.2rem;animation:bgFloat 6.5s ease-in-out infinite;animation-delay:-4s;">✿</div>
+
+  <!-- Stars & sparkles -->
+  <div class="bg-deco" style="left:14%;top:5%;font-size:1.4rem;animation:bgFloat 4.5s ease-in-out infinite;animation-delay:-1s;opacity:0.6;">✦</div>
+  <div class="bg-deco" style="right:16%;top:8%;font-size:1.2rem;animation:bgDrift 5.5s ease-in-out infinite;animation-delay:-2.5s;opacity:0.5;">✦</div>
+  <div class="bg-deco" style="left:20%;bottom:10%;font-size:1.6rem;animation:bgFloat 6s ease-in-out infinite;animation-delay:-3.5s;opacity:0.55;">✦</div>
+  <div class="bg-deco" style="right:20%;bottom:8%;font-size:1.3rem;animation:bgDrift 4.8s ease-in-out infinite;animation-delay:-0.5s;opacity:0.5;">✦</div>
+
+  <!-- SVG tulip left side -->
+  <svg class="bg-deco" style="left:0%;top:28%;width:90px;opacity:0.18;animation:bgDrift 9s ease-in-out infinite;animation-delay:-1s;" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M40 110 Q38 70 35 50 Q25 35 20 15 Q35 20 40 40 Q45 20 60 15 Q55 35 45 50 Q42 70 40 110Z" fill="#e05580"/>
+    <path d="M40 110 Q36 75 28 55 Q15 45 10 25 Q28 30 35 55" fill="#f887aa" opacity="0.6"/>
+    <line x1="40" y1="110" x2="40" y2="118" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/>
+    <path d="M40 90 Q30 82 22 85" stroke="#4a7c3f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <!-- SVG tulip right side -->
+  <svg class="bg-deco" style="right:0%;bottom:30%;width:80px;opacity:0.18;animation:bgFloat 8s ease-in-out infinite;animation-delay:-4s;transform:scaleX(-1);" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M40 110 Q38 70 35 50 Q25 35 20 15 Q35 20 40 40 Q45 20 60 15 Q55 35 45 50 Q42 70 40 110Z" fill="#c9517a"/>
+    <path d="M40 110 Q36 75 28 55 Q15 45 10 25 Q28 30 35 55" fill="#e8789a" opacity="0.6"/>
+    <line x1="40" y1="110" x2="40" y2="118" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/>
+    <path d="M40 90 Q30 82 22 85" stroke="#4a7c3f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <!-- Petals drifting top -->
+  <div class="bg-deco" style="left:30%;top:3%;font-size:1.8rem;animation:bgDrift 7s ease-in-out infinite;animation-delay:-2s;opacity:0.5;">🌸</div>
+  <div class="bg-deco" style="right:30%;top:5%;font-size:1.5rem;animation:bgFloat 5.2s ease-in-out infinite;animation-delay:-3.2s;opacity:0.45;">🌸</div>
+  <div class="bg-deco" style="left:50%;bottom:5%;font-size:1.6rem;animation:bgDrift 6.8s ease-in-out infinite;animation-delay:-1.8s;opacity:0.5;">🌷</div>
+
+  <!-- Hearts -->
+  <div class="bg-deco" style="left:5%;top:70%;font-size:1.4rem;animation:bgFloat 5.5s ease-in-out infinite;animation-delay:-0.3s;opacity:0.4;">💕</div>
+  <div class="bg-deco" style="right:5%;top:65%;font-size:1.3rem;animation:bgDrift 6.2s ease-in-out infinite;animation-delay:-2.8s;opacity:0.35;">💕</div>
 </div>
 
 <!-- Backdrop -->
@@ -576,6 +652,7 @@ function openLetter() {
 
       setTimeout(() => {
         document.getElementById('letter-card').classList.add('open');
+      document.getElementById('bg-decorations').classList.add('visible');
         setTimeout(() => {
           document.getElementById('close-btn').classList.add('show');
         }, 400);
