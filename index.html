@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G?i 11A3 R?c R? nh?t!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&family=Pacifico&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --pink-light: #ffebf0;
+            --pink-main: #ff85a1;
+            --pink-dark: #ff4d6d;
+            --gold: #ffd700;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Hi?u ?ng l?p lánh nhu Disney */
+        body::before {
+            content: "?";
+            position: absolute;
+            font-size: 20px;
+            animation: sparkle 5s infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes sparkle {
+            0% { transform: translate(0,0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(100vw, 100vh); opacity: 0; }
+        }
+
+        /* Container lá thu */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        /* Ngôi sao phong ?n */
+        .star-seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: #f8bbd0;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+            z-index: 10;
+            transition: all 0.5s ease;
+            border: 2px solid white;
+        }
+
+        .star-seal span {
+            color: #ff4d6d;
+            font-family: 'Pacifico', crossorigin;
+            font-size: 22px;
+            margin-top: 5px;
+        }
+
+        /* Hình ?nh l?p */
+        #class-photo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 80%;
+            max-width: 600px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 8px solid white;
+            z-index: 100;
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* N?i dung b?c thu */
+        .letter-content {
+            display: none;
+            background: white;
+            padding: 40px;
+            width: 85%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            border: 2px dashed var(--pink-main);
+            animation: slideUp 1s forwards;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--pink-dark);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.8;
+            color: #444;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        .heart {
+            color: var(--pink-dark);
+            font-size: 24px;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="envelope-wrapper" id="envelope" onclick="openLetter()">
+        <div class="star-seal">
+            <span>11A3</span>
+        </div>
+        <div style="width: 250px; height: 180px; background: white; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);"></div>
+    </div>
+
+    <img src="https://lh3.googleusercontent.com/d/1XyS_j4t7_O4B5Zt1_QfG3q_WbXN_xG9_" id="class-photo" alt="L?p 11A3">
+
+    <div id="main-letter" class="letter-content">
+        <h1>G?i nh?ng "dóa hoa" r?c r? nh?t c?a 11A3!</h1>
+        <p>
+            Các b?n n? 11A3 thân m?n,<br><br>
+            Thay m?t cho cánh mày râu trong l?p, t? vi?t nh?ng dòng này d? g?i l?i c?m on chân thành nh?t d?n các b?n. 11A3 c?a chúng mình ch?c ch?n s? r?t nhàm chán n?u thi?u di ti?ng cu?i, s? d?u dàng và c? nh?ng l?n "nh?c bài" c?u nguy t? các b?n.<br><br>
+            Chúc các cô gái c?a l?p mình luôn t? tin là chính mình, xinh d?p theo cách riêng và s?m d?t du?c nh?ng m?c tiêu h?c t?p s?p t?i. Mong r?ng 11A3 s? luôn là m?t gia dình doàn k?t, noi mà m?i b?n n? d?u c?m th?y du?c trân tr?ng và yêu thuong.<br><br>
+            Mãi r?ng r? nhu th? này nhé! <span class="heart">?</span>
+        </p>
+    </div>
+
+    <script>
+        function openLetter() {
+            const envelope = document.getElementById('envelope');
+            const photo = document.getElementById('class-photo');
+            const letter = document.getElementById('main-letter');
+
+            // 1. ?n phong bì
+            envelope.style.display = 'none';
+
+            // 2. B?n pháo hoa t? 2 c?nh
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+              confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#ff85a1', '#fbbdc3', '#ffffff']
+              });
+              confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#ff85a1', '#fbbdc3', '#ffffff']
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+
+            // 3. Hi?n ?nh to lên r?i thu nh? d?n vào v? trí
+            photo.style.transform = 'translate(-50%, -50%) scale(1)';
+            
+            setTimeout(() => {
+                photo.style.transform = 'translate(-50%, -120%) scale(0.4)';
+                photo.style.top = '20%';
+                
+                // 4. Hi?n b?c thu
+                setTimeout(() => {
+                    letter.style.display = 'block';
+                }, 500);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
