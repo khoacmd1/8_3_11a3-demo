@@ -315,19 +315,19 @@
 
   /* Close button */
   #close-btn {
-    position: fixed; top: 20px; right: 20px;
-    z-index: 80;
-    background: rgba(255,255,255,0.85);
-    border: none; border-radius: 50%;
-    width: 42px; height: 42px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: var(--pink-deep);
-    display: none;
-    align-items: center; justify-content: center;
-    box-shadow: 0 4px 14px rgba(180,0,60,0.2);
-    transition: background 0.2s, transform 0.2s;
+    position: fixed; top: 20px; right: 20px; z-index: 200;
+    width: 48px; height: 48px; border-radius: 50%; border: none;
+    background: rgba(255,255,255,0.25); backdrop-filter: blur(8px);
+    color: white; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(180,0,80,0.25);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s, transform 0.2s;
+    padding: 0;
   }
+  #close-btn svg { width: 22px; height: 22px; display: block; }
+  #close-btn.show { opacity: 1; pointer-events: auto; }
+  #close-btn:hover { transform: scale(1.2); }
   #close-btn:hover { background: #fff; transform: scale(1.1); }
   #close-btn.show { display: flex; }
 
@@ -491,7 +491,6 @@
     #env-back-flap  { border-width: 0 130px 105px 130px !important; }
     #env-top-flap   { height: 105px !important; }
     #env-top-flap-inner { border-width: 105px 130px 0 130px !important; }
-    #env-letter-paper { width: 228px !important; }
   }
   #env-bottom-fold {
     position: absolute; inset: 0;
@@ -544,21 +543,6 @@
     font-family: 'Dancing Script', cursive; font-size: 0.8rem;
     color: white; font-weight: 700; letter-spacing: 1px;
     box-shadow: 0 4px 16px rgba(160,0,60,0.5), inset 0 2px 4px rgba(255,255,255,0.3);
-  }
-  #env-letter-paper {
-    position: absolute; width: 280px; z-index: 3;
-    background: linear-gradient(180deg, #fff8f0 0%, #fff0f5 100%);
-    border-radius: 8px 8px 4px 4px; padding: 20px 24px;
-    box-shadow: 0 -8px 24px rgba(0,0,0,0.15);
-    border: 1px solid rgba(255,200,220,0.6);
-    transform: translateY(80px);
-    transition: transform 0.8s cubic-bezier(0.34,1.2,0.64,1);
-  }
-  #env-letter-paper.peek { transform: translateY(20px); }
-  #env-letter-paper.out  { transform: translateY(-350px); }
-  .env-paper-lines {
-    height: 2px; margin: 12px 0; border-radius: 2px; opacity: 0.6;
-    background: linear-gradient(90deg, transparent, #f5b8cc 20%, #f5b8cc 80%, transparent);
   }
 
   @keyframes envWiggle {
@@ -685,7 +669,7 @@
 
 
 <!-- Envelope scene -->
-<div id="envelope-scene" onclick="if(this.classList.contains('idle')) openLetter()">
+<div id="envelope-scene" onclick="if(this.classList.contains('idle')) openLetter(true)">
   <div id="env-body">
     <div id="env-back-flap"></div>
     <div id="env-left-fold"></div>
@@ -695,8 +679,6 @@
     <div id="env-label">✦ 11A3 ✦</div>
     <div id="env-seal">11A3</div>
   </div>
-  <div id="env-letter-paper">
-    <div class="env-paper-lines"></div>
     <div class="env-paper-lines"></div>
     <div class="env-paper-lines"></div>
   </div>
@@ -755,7 +737,11 @@
 </div>
 
 <!-- Close button -->
-<button id="close-btn" onclick="closeLetter()">✕</button>
+<button id="close-btn" onclick="closeLetter()">
+  <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/>
+  </svg>
+</button>
 
 <script>
 // ── Floating petals ──
@@ -833,16 +819,37 @@ function launchConfetti() {
 
 // ── Open letter ──
 let opened = false;
-function openLetter() {
+function openLetter(fromIdle = false) {
   if (opened) return;
   opened = true;
 
-  // Reset envelope state
   const scene = document.getElementById('envelope-scene');
+
+  // Nếu bấm từ idle: bỏ qua ảnh, mở thẳng lá thư
+  if (fromIdle) {
+    scene.classList.remove('idle');
+    scene.style.transition = '';
+    scene.style.opacity = '1';
+    document.getElementById('env-top-flap').classList.add('open');
+    const seal = document.getElementById('env-seal');
+    seal.style.transition = 'opacity 0.4s ease';
+    seal.style.opacity = '0';
+    setTimeout(() => {
+      scene.style.transition = 'opacity 0.5s ease';
+      scene.style.opacity = '0';
+      document.getElementById('letter-overlay').classList.add('open');
+      setTimeout(() => {
+        document.getElementById('letter-card').classList.add('open');
+        document.getElementById('bg-decorations').classList.add('visible');
+        setTimeout(() => { document.getElementById('close-btn').classList.add('show'); }, 400);
+      }, 100);
+    }, 1000);
+    return;
+  }
+
+  // Lần đầu: full flow từ ngôi sao
   scene.style.cssText = '';
   scene.classList.remove('visible', 'idle');
-  const paper = document.getElementById('env-letter-paper');
-  paper.style.transition = 'none'; paper.classList.remove('peek', 'out');
   document.getElementById('env-top-flap').classList.remove('open');
   document.getElementById('env-seal').style.cssText = '';
 
@@ -893,11 +900,7 @@ function openLetter() {
         seal.style.transition = 'opacity 0.4s ease'; seal.style.opacity = '0';
       }, 600);
 
-      // 6. Paper peeks out
-      setTimeout(() => { paper.style.transition = ''; paper.classList.add('peek'); }, 1100);
 
-      // 7. Paper slides out fully
-      setTimeout(() => { paper.classList.add('out'); }, 1700);
 
       // 8. Envelope fades, letter rises
       setTimeout(() => {
@@ -926,13 +929,8 @@ function closeLetter() {
     scene.style.transition = 'opacity 0.5s ease'; scene.style.opacity = '1';
 
     // Paper slides back in
-    const paper = document.getElementById('env-letter-paper');
-    paper.style.transition = 'none';
-    paper.classList.remove('peek'); paper.classList.add('out');
 
     setTimeout(() => {
-      paper.style.transition = 'transform 0.75s cubic-bezier(0.4,0,0.2,1)';
-      paper.classList.remove('out');
 
       // Flap closes
       setTimeout(() => {
@@ -946,7 +944,6 @@ function closeLetter() {
 
       // Envelope idle — wiggle mãi, chờ người dùng bấm vào
       setTimeout(() => {
-        paper.style.transition = '';
         scene.classList.add('idle');
         opened = false;
       }, 1200);
@@ -1002,5 +999,6 @@ document.getElementById('backdrop').addEventListener('click', closeLetter);
 </script>
 </body>
 </html>
+
 
 
